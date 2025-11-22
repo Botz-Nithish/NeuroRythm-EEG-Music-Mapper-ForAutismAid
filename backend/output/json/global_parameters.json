@@ -1,0 +1,13 @@
+{
+  "average_wave_strengths": {
+    "delta": 0.652,
+    "theta": 0.076,
+    "alpha": 0.026,
+    "beta": 0.035,
+    "gamma": 0.212
+  },
+  "musical_parameters": {
+    "tempo": 74,
+    "key": "A minor"
+  }
+}
