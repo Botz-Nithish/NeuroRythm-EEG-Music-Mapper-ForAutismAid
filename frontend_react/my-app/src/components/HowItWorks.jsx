@@ -1,363 +1,326 @@
 import { Link } from "react-router-dom";
-import { FaBrain, FaMusic, FaVideo, FaArrowRight, FaWaveSquare } from "react-icons/fa";
+import { FaMusic, FaVideo, FaArrowRight } from "react-icons/fa";
+import FloatingLines from "../elements/FloatingLines";
+import MagicBento from "../elements/MagicBento";
+
+// Custom card data for HowItWorks
+const howItWorksCards = [
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Project Overview',
+    description: 'Personalized calm for autistic children through ML-powered EEG analysis',
+    label: 'Overview',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1">
+          <p className="text-sm text-gray-300 mb-3 leading-relaxed">
+            Autistic children often experience uncontrollable emotions and heightened hyperactivity, 
+            which can disrupt their ability to relax and get adequate sleep.
+          </p>
+          <p className="text-sm text-gray-300 mb-4 leading-relaxed">
+            We&apos;ve developed a machine learning model that analyzes brain waves (EEG data) to generate 
+            personalized, calming content.
+          </p>
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="bg-purple-500/20 p-3 rounded-lg border border-purple-500/30">
+              <FaMusic className="text-purple-400 mb-2" size={20} />
+              <h4 className="text-xs font-semibold text-white mb-1">Custom Music</h4>
+              <p className="text-xs text-gray-400">EEG-derived melodies</p>
+            </div>
+            <div className="bg-pink-500/20 p-3 rounded-lg border border-pink-500/30">
+              <FaVideo className="text-pink-400 mb-2" size={20} />
+              <h4 className="text-xs font-semibold text-white mb-1">Calming Videos</h4>
+              <p className="text-xs text-gray-400">Serene environments</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'EEG Data Analysis',
+    description: 'Collect and analyze brain signals to infer key parameters',
+    label: 'Step 1',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1">
+          <p className="text-sm text-gray-300 mb-3 leading-relaxed">
+            We collect EEG signals using wearable devices and analyze them to infer:
+          </p>
+          <ul className="text-xs text-gray-400 space-y-1 mb-4 list-disc list-inside">
+            <li>Relaxation levels (alpha/theta waves)</li>
+            <li>Stress indicators (beta wave spikes)</li>
+            <li>Arousal states (gamma imbalances)</li>
+          </ul>
+          <div className="bg-purple-500/10 p-3 rounded-lg border border-purple-500/20">
+            <h4 className="text-xs font-semibold text-white mb-2">Global Parameters</h4>
+            <div className="flex flex-wrap gap-1">
+              {['avg_alpha', 'avg_beta', 'avg_gamma', 'avg_delta', 'avg_theta'].map((param, i) => (
+                <span key={i} className="text-xs bg-purple-500/20 px-2 py-1 rounded text-purple-300">
+                  {param}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Parameter Mapping',
+    description: 'Map EEG parameters to music generation parameters',
+    label: 'Step 2',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1">
+          <div className="space-y-3">
+            <div className="bg-purple-500/10 p-3 rounded-lg border border-purple-500/20">
+              <h4 className="text-xs font-semibold text-white mb-1">Tempo</h4>
+              <p className="text-xs text-gray-400 font-mono mb-1">60-80 bpm</p>
+              <p className="text-xs text-gray-500">Higher arousal = slower tempo</p>
+            </div>
+            <div className="bg-pink-500/10 p-3 rounded-lg border border-pink-500/20">
+              <h4 className="text-xs font-semibold text-white mb-1">Key Selection</h4>
+              <p className="text-xs text-gray-400">Based on dominant wave</p>
+              <p className="text-xs text-gray-500">A minor, C major, G major</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Note Parameters',
+    description: 'Dynamic MIDI note adjustments per interval',
+    label: 'Step 3',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1 space-y-2">
+          <div className="bg-purple-500/10 p-2 rounded border border-purple-500/20">
+            <h4 className="text-xs font-semibold text-white">Pitch</h4>
+            <p className="text-xs text-gray-400">40-80 (C2-G5)</p>
+          </div>
+          <div className="bg-pink-500/10 p-2 rounded border border-pink-500/20">
+            <h4 className="text-xs font-semibold text-white">Step</h4>
+            <p className="text-xs text-gray-400">1-5 semitones</p>
+          </div>
+          <div className="bg-blue-500/10 p-2 rounded border border-blue-500/20">
+            <h4 className="text-xs font-semibold text-white">Duration</h4>
+            <p className="text-xs text-gray-400">0.5-2.0 seconds</p>
+          </div>
+          <div className="bg-green-500/10 p-2 rounded border border-green-500/20">
+            <h4 className="text-xs font-semibold text-white">Velocity</h4>
+            <p className="text-xs text-gray-400">40-80 (volume)</p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Additional Adjustments',
+    description: 'Refinements based on statistical extremes',
+    label: 'Step 4',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1 space-y-2">
+          <div className="bg-purple-500/10 p-2 rounded border border-purple-500/20">
+            <h4 className="text-xs font-semibold text-white mb-1">Pitch Range</h4>
+            <p className="text-xs text-gray-400">Adjusts for high arousal</p>
+          </div>
+          <div className="bg-pink-500/10 p-2 rounded border border-pink-500/20">
+            <h4 className="text-xs font-semibold text-white mb-1">Melodic Contour</h4>
+            <p className="text-xs text-gray-400">Descending for arousal</p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Video Integration',
+    description: 'Complement music with calming visuals',
+    label: 'Step 5',
+    content: (
+      <div className="flex flex-col h-full">
+        <div className="flex-1">
+          <p className="text-sm text-gray-300 mb-3 leading-relaxed">
+            Match visual tempo and colors to EEG parameters
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {['Ocean', 'Forest', 'Night Sky', 'Rain'].map((scene, i) => (
+              <div key={i} className="bg-purple-500/10 p-2 rounded border border-purple-500/20 text-center">
+                <p className="text-xs text-purple-300">{scene}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Comprehensive Analysis',
+    description: 'All five wave types included in every formula',
+    label: 'Why It Works',
+    content: (
+      <div className="flex flex-col h-full">
+        <p className="text-sm text-gray-300 leading-relaxed">
+          Every formula includes all five wave types, capturing their full influence rather than 
+          reducing them to a single index.
+        </p>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Personalization',
+    description: 'Adapts to individual EEG profiles',
+    label: 'Why It Works',
+    content: (
+      <div className="flex flex-col h-full">
+        <p className="text-sm text-gray-300 leading-relaxed">
+          Global parameters reflect overall profile, while per-interval parameters adapt to 
+          moment-to-moment changes.
+        </p>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Therapeutic Alignment',
+    description: 'Based on music therapy principles',
+    label: 'Why It Works',
+    content: (
+      <div className="flex flex-col h-full">
+        <p className="text-sm text-gray-300 leading-relaxed">
+          Lower pitches, smaller steps, and longer durations during high arousal align with 
+          music therapy to boost alpha/theta and reduce beta/gamma.
+        </p>
+      </div>
+    )
+  },
+  {
+    color: 'rgba(6, 0, 16, 0.8)',
+    title: 'Statistical Integration',
+    description: 'Rich, data-driven output',
+    label: 'Why It Works',
+    content: (
+      <div className="flex flex-col h-full">
+        <p className="text-sm text-gray-300 leading-relaxed">
+          Maxima adjust intensity, modes influence contour, and averages set the baseline, 
+          ensuring comprehensive analysis.
+        </p>
+      </div>
+    )
+  }
+];
 
 export default function HowItWorks() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <div className="bg-blue-50 py-12 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How Autis Buddy Works
-            </h1>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600">
-              Understanding our approach to creating personalized calm for autistic children
-            </p>
-          </div>
-        </div>
+    <div className="min-h-screen relative">
+      {/* Background Animation */}
+      <div className="fixed inset-0 z-0">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={[10, 15, 20]}
+          lineDistance={[8, 6, 4]}
+          bendRadius={5.0}
+          bendStrength={-0.5}
+          interactive={true}
+          parallax={true}
+        />
       </div>
+      
+      {/* Content Layer */}
+      <div className="relative z-20 pt-20 pb-12">
+        {/* Hero Section */}
+        <div className="text-center mb-12 px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            How <span className="text-purple-400">NeuroRythm</span> Works
+          </h1>
+          <p className="max-w-2xl mx-auto text-xl text-gray-300">
+            Understanding our approach to creating personalized calm for autistic children
+          </p>
+        </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Project Overview */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Overview</h2>
-          <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-            <p className="text-gray-700 mb-4">
-              Autistic children often experience uncontrollable emotions and heightened hyperactivity, 
-              which can disrupt their ability to relax and get adequate sleep. Lack of sleep further 
-              exacerbates behavioral and emotional challenges, creating a cycle that is difficult to break.
-            </p>
-            <p className="text-gray-700 mb-4">
-              To address this issue, we&apos;ve developed a machine learning (ML) model that analyzes the brain 
-              waves (EEG data) of autistic children. By extracting meaningful parameters from the EEG signals, 
-              the system generates personalized, calming content to help the child transition from a 
-              hyperactive state to a calm, restful one.
-            </p>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-4">The personalized content includes:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-5 rounded-lg flex items-start">
-                <div className="mr-4 mt-1 text-blue-600">
-                  <FaMusic size={24} />
-                </div>
-                <div>
-                  <h4 className="font-medium text-lg text-gray-900 mb-2">Custom Soothing Music</h4>
-                  <p className="text-gray-700">
-                    Generated dynamically based on EEG-derived parameters, with specific musical notes 
-                    or chords (e.g., A-sharp, C-sharp) tailored to the child&apos;s current brain state.
-                  </p>
-                </div>
-              </div>
-              <div className="bg-blue-50 p-5 rounded-lg flex items-start">
-                <div className="mr-4 mt-1 text-blue-600">
-                  <FaVideo size={24} />
-                </div>
-                <div>
-                  <h4 className="font-medium text-lg text-gray-900 mb-2">Accompanying Calming Videos</h4>
-                  <p className="text-gray-700">
-                    Stock footage of serene environments such as rain, flowing water, or nature scenes 
-                    designed to visually complement the music and create an overall calming experience.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Implementation Process */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Implementation Process</h2>
-          <div className="space-y-8">
-            {/* Step 1: EEG Data Analysis */}
-            <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">1</div>
-                <h3 className="text-xl font-semibold text-gray-900">EEG Data Analysis</h3>
-              </div>
-              <div className="pl-11">
-                <p className="text-gray-700 mb-4">
-                  We collect EEG signals from the child using a wearable EEG device and analyze 
-                  the signals to infer key parameters related to brain activity, such as:
-                </p>
-                <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
-                  <li>Relaxation levels (e.g., alpha and theta wave dominance)</li>
-                  <li>Stress or hyperactivity indicators (e.g., beta wave spikes)</li>
-                  <li>Arousal states (e.g., imbalances in gamma or frontal alpha waves)</li>
-                </ul>
-                <div className="bg-gray-50 rounded-lg p-4 flex flex-col sm:flex-row items-center">
-                  <div className="text-blue-600 mb-4 sm:mb-0 sm:mr-6">
-                    <FaWaveSquare size={48} />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 mb-1">Global Music Parameters</h4>
-                    <p className="text-gray-700 text-sm">
-                      We calculate averages for each type of brainwave to determine the overall state:
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mt-3 text-sm">
-                      <div className="bg-blue-50 p-2 rounded">avg_alpha</div>
-                      <div className="bg-green-50 p-2 rounded">avg_gamma</div>
-                      <div className="bg-purple-50 p-2 rounded">avg_beta</div>
-                      <div className="bg-yellow-50 p-2 rounded">avg_delta</div>
-                      <div className="bg-red-50 p-2 rounded">avg_theta</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 2: Parameter Mapping */}
-            <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">2</div>
-                <h3 className="text-xl font-semibold text-gray-900">Parameter Mapping to Music Generation</h3>
-              </div>
-              <div className="pl-11">
-                <p className="text-gray-700 mb-4">
-                  We use the EEG parameters to determine the emotional and activity state of the child, 
-                  then generate music based on their specific needs:
-                </p>
+        {/* Magic Bento Grid */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <MagicBento
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            glowColor="132, 0, 255"
+            textAutoHide={false}
+            enableTilt={false}
+            enableMagnetism={true}
+            clickEffect={true}
+          >
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {howItWorksCards.map((card, index) => {
+                const baseClassName = `card flex flex-col justify-between relative min-h-[280px] w-full p-6 rounded-[20px] border border-purple-500/30 font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(132,0,255,0.3)] card--border-glow`;
                 
-                <div className="space-y-6 mt-6">
-                  {/* Tempo Parameter */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Tempo</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 font-mono text-sm overflow-x-auto">
-                      Tempo = 80 - 20 * (avg_beta + avg_gamma) / (avg_alpha + avg_theta + avg_delta + 0.01)
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Range: 60–80 beats per minute (bpm). Higher arousal lowers the tempo to slow the music 
-                      and counteract hyperactivity, while a relaxed profile keeps it closer to 80 bpm for 
-                      gentle engagement.
-                    </p>
-                  </div>
+                const cardStyle = {
+                  backgroundColor: card.color,
+                  borderColor: 'rgba(132, 0, 255, 0.3)',
+                  color: '#fff',
+                  '--glow-x': '50%',
+                  '--glow-y': '50%',
+                  '--glow-intensity': '0',
+                  '--glow-radius': '200px'
+                };
 
-                  {/* Key Selection */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Key Selection</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 text-sm">
-                      Choose based on the highest average wave strength:
-                      <ul className="list-disc pl-6 mt-2 space-y-1">
-                        <li>if avg_delta &gt; others: A minor</li>
-                        <li>if avg_theta &gt; others: C major</li>
-                        <li>if avg_alpha &gt; others: G major</li>
-                        <li>if avg_beta or avg_gamma &gt; others: A minor</li>
-                      </ul>
+                // Make first card span 2 columns on large screens
+                const gridSpan = index === 0 ? 'md:col-span-2 lg:col-span-2' : '';
+                // Make last 4 cards (Why It Works) span 2 columns each on xl
+                const whySpan = index >= 6 ? 'xl:col-span-1' : '';
+
+                return (
+                  <div
+                    key={index}
+                    className={`${baseClassName} ${gridSpan} ${whySpan}`}
+                    style={cardStyle}
+                  >
+                    <div className="card__header flex justify-between items-start mb-4">
+                      <span className="card__label text-sm font-semibold text-purple-400 bg-purple-500/20 px-3 py-1 rounded-full">
+                        {card.label}
+                      </span>
                     </div>
-                    <p className="text-gray-700 text-sm">
-                      The dominant wave reflects the child&apos;s baseline state, personalizing the key to their 
-                      typical brain activity. Different keys evoke different emotional responses to match or 
-                      counteract the child&apos;s state.
-                    </p>
+                    <div className="card__content flex flex-col flex-1">
+                      <h3 className="card__title font-semibold text-xl mb-2 text-white">
+                        {card.title}
+                      </h3>
+                      <p className="card__description text-sm text-gray-400 mb-4">
+                        {card.description}
+                      </p>
+                      {card.content}
+                    </div>
                   </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
-
-            {/* Step 3: Per-Interval Note Parameters */}
-            <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">3</div>
-                <h3 className="text-xl font-semibold text-gray-900">Per-Interval Note Parameters</h3>
-              </div>
-              <div className="pl-11">
-                <p className="text-gray-700 mb-4">
-                  These adjust MIDI notes for each EEG interval based on specific wave strengths, 
-                  ensuring dynamic adaptation:
-                </p>
-                
-                <div className="space-y-6 mt-6">
-                  {/* Pitch */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Pitch (MIDI Note Number)</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 font-mono text-sm overflow-x-auto">
-                      pitch[i] = 40 + 40 * [(alpha[i] + theta[i] + 0.5 * delta[i]) - (beta[i] + gamma[i])] / 100
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Range: 40–80 (C2 to G5). Alpha and theta drive pitch upward as they indicate calm states; 
-                      arousal waves lower pitch during hyperactivity, promoting relaxation with deeper tones.
-                    </p>
-                  </div>
-
-                  {/* Step */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Step (Interval Between Notes)</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 font-mono text-sm overflow-x-auto">
-                      step[i] = 1 + 4 * (1 - (beta[i] + gamma[i]) / (alpha[i] + theta[i] + delta[i] + 0.01))
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Range: 1–5 semitones. High arousal reduces the step size for stability and simplicity, 
-                      while low arousal allows larger, flowing intervals.
-                    </p>
-                  </div>
-
-                  {/* Duration */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Duration (Note Length)</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 font-mono text-sm overflow-x-auto">
-                      duration[i] = 0.5 + 1.5 * (alpha[i] + theta[i] + delta[i]) / (beta[i] + gamma[i] + 0.01)
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Range: 0.5–2.0 seconds. Higher relaxation waves lengthen notes, slowing the music to calm the child, 
-                      while high arousal shortens durations.
-                    </p>
-                  </div>
-
-                  {/* Velocity */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Velocity (MIDI Volume)</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 font-mono text-sm overflow-x-auto">
-                      velocity[i] = 40 + 40 * (max_alpha / 100)
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Range: 40–80. Ties velocity to the child&apos;s peak relaxation capacity (max_alpha), 
-                      personalizing loudness to their strongest calm state.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 4: Additional Adjustments */}
-            <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">4</div>
-                <h3 className="text-xl font-semibold text-gray-900">Additional Adjustments</h3>
-              </div>
-              <div className="pl-11">
-                <p className="text-gray-700 mb-4">
-                  These refinements further personalize the music based on statistical extremes and tendencies:
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                  {/* Pitch Range Adjustment */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Pitch Range Adjustment</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 text-sm">
-                      If max_beta + max_gamma &gt; 60: Shift pitch range to 30–70
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      Detects if peak arousal exceeds 60%, indicating significant hyperactivity, and lowers the 
-                      pitch range to emphasize deeper, more grounding tones.
-                    </p>
-                  </div>
-
-                  {/* Melodic Contour */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Melodic Contour</h4>
-                    <div className="bg-gray-100 p-3 rounded mb-3 text-sm">
-                      If mode_beta or mode_gamma is highest: step[i] = -step[i] (descending)
-                    </div>
-                    <p className="text-gray-700 text-sm">
-                      If the most frequent state is arousal, reverses step direction to create descending 
-                      melodies that musically &quot;wind down&quot; arousal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 5: Video Integration */}
-            <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">5</div>
-                <h3 className="text-xl font-semibold text-gray-900">Video Integration</h3>
-              </div>
-              <div className="pl-11">
-                <p className="text-gray-700 mb-4">
-                  Complement the personalized music with appropriate visual content:
-                </p>
-                <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                  <li>Select from a library of calming video clips (e.g., nature scenes, slow-moving water)</li>
-                  <li>Match the visual tempo and color scheme to the EEG parameters</li>
-                  <li>Synchronize visual transitions with musical changes</li>
-                </ul>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                  <div className="aspect-video bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-blue-500">Ocean Waves</span>
-                  </div>
-                  <div className="aspect-video bg-green-100 rounded-lg flex items-center justify-center">
-                    <span className="text-green-500">Forest Scenes</span>
-                  </div>
-                  <div className="aspect-video bg-purple-100 rounded-lg flex items-center justify-center">
-                    <span className="text-purple-500">Night Sky</span>
-                  </div>
-                  <div className="aspect-video bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <span className="text-yellow-600">Gentle Rain</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why It Works */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Our Approach Works</h2>
-          <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-5 rounded-lg">
-                <h4 className="font-medium text-lg text-gray-900 mb-3">Comprehensive Wave Analysis</h4>
-                <p className="text-gray-700">
-                  Every formula includes all five wave types (directly or via ratios), capturing their 
-                  full influence rather than reducing them to a single index.
-                </p>
-              </div>
-              <div className="bg-blue-50 p-5 rounded-lg">
-                <h4 className="font-medium text-lg text-gray-900 mb-3">Personalization</h4>
-                <p className="text-gray-700">
-                  Global parameters reflect the child&apos;s overall EEG profile via averages and maxima, 
-                  while per-interval parameters adapt to moment-to-moment changes.
-                </p>
-              </div>
-              <div className="bg-blue-50 p-5 rounded-lg">
-                <h4 className="font-medium text-lg text-gray-900 mb-3">Therapeutic Alignment</h4>
-                <p className="text-gray-700">
-                  Lower pitches, smaller steps, and longer durations during high arousal align with 
-                  music therapy principles to boost alpha/theta and reduce beta/gamma.
-                </p>
-              </div>
-              <div className="bg-blue-50 p-5 rounded-lg">
-                <h4 className="font-medium text-lg text-gray-900 mb-3">Statistical Integration</h4>
-                <p className="text-gray-700">
-                  Maxima adjust intensity, modes influence contour, and averages set the baseline, 
-                  ensuring a rich, data-driven output.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+          </MagicBento>
+        </div>
 
         {/* Get Started CTA */}
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl shadow-md p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Ready to Try Autis Buddy?</h2>
-          <p className="text-blue-50 mb-6 max-w-2xl mx-auto">
-            Upload your EEG data to generate personalized, calming content for your child
-          </p>
-          <Link to="/upload" className="inline-flex items-center bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition shadow-sm">
-            Get Started <FaArrowRight className="ml-2" />
-          </Link>
+        <div className="max-w-4xl mx-auto mt-12 px-4">
+          <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-lg p-8 text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">Ready to Try NeuroRythm?</h2>
+            <p className="text-purple-200 mb-6 max-w-2xl mx-auto">
+              Upload your EEG data to generate personalized, calming content for your child
+            </p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg"
+            >
+              Get Started <FaArrowRight className="ml-2" />
+            </Link>
+          </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white py-8 border-t border-gray-200 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <Link to="/" className="font-semibold text-blue-600 flex items-center">
-                <FaBrain className="mr-2" /> Autis Buddy
-              </Link>
-              <p className="text-sm text-gray-500 mt-1">
-                Helping autistic children transition to calm and rest
-              </p>
-            </div>
-          </div>
-          <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-            <p className="text-sm text-gray-400">© {new Date().getFullYear()} Autis Buddy. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

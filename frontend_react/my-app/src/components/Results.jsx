@@ -76,7 +76,7 @@ export default function Results() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-24">
         <div className="text-center">
           <FaSpinner className="inline text-blue-500 text-3xl animate-spin mb-4" />
           <p className="text-gray-700">Loading results...</p>
@@ -87,7 +87,7 @@ export default function Results() {
 
   if (error || !processingState || !processingState.output_files) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 pt-24">
         <main className="max-w-4xl mx-auto py-8 px-4">
           <div className="mb-6">
             <Link
@@ -112,7 +112,7 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-24">
       <main className="max-w-4xl mx-auto py-8 px-4">
         <div className="mb-6">
           <Link

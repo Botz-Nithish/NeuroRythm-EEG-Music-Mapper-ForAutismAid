@@ -6,6 +6,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import FloatingLines from "../elements/FloatingLines";
 
 export default function Process() {
   const [searchParams] = useSearchParams();
@@ -120,8 +121,23 @@ export default function Process() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-4xl mx-auto py-8 px-4">
+    <div className="min-h-screen relative">
+      {/* Background Animation */}
+      <div className="fixed inset-0 z-0">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={[10, 15, 20]}
+          lineDistance={[8, 6, 4]}
+          bendRadius={5.0}
+          bendStrength={-0.5}
+          interactive={true}
+          parallax={true}
+        />
+      </div>
+      
+      {/* Content Layer */}
+      <div className="relative z-20 pt-20">
+        <main className="max-w-4xl mx-auto py-8 px-4">
         <div className="mb-6">
           <Link
             to="/upload"
@@ -195,7 +211,8 @@ export default function Process() {
             </div>
           </>
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

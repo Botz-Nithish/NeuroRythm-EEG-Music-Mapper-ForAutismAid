@@ -1,19 +1,35 @@
 import { Link } from "react-router-dom";
 import { FaBrain, FaMusic, FaVideo } from "react-icons/fa";
+import FloatingLines from "../elements/FloatingLines";
 
 export default function Home() {
   return (
-    <div className="h-screen overflow-hidden bg-gray-50 flex flex-col">
-      {/* Main Content */}
-      <main className="flex-grow flex items-center">
+    <div className="h-screen overflow-hidden relative flex flex-col overflow-y-auto">
+      {/* Background Animation */}
+      <div className="fixed inset-0 z-0">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={[10, 15, 20]}
+          lineDistance={[8, 6, 4]}
+          bendRadius={5.0}
+          bendStrength={-0.5}
+          interactive={true}
+          parallax={true}
+        />
+      </div>
+      
+      {/* Content Layer */}
+      <div className="relative z-20 flex flex-col flex-grow pt-12">
+        {/* Main Content */}
+        <main className="flex-grow flex items-center">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left Column - Text Content */}
           <div className="flex flex-col justify-center space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-black leading-tight">
               Personalized Calm for{" "}
-              <span className="text-blue-500">Autistic Children</span>
+              <span className="text-white">Autistic Children</span>
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-white text-lg">
               Using machine learning to analyze brain waves and generate custom
               soothing content that helps transition from hyperactivity to calm.
             </p>
@@ -73,12 +89,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white py-4 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">
-          Autis Buddy — Helping autistic children transition to calm and rest
-        </div>
-      </footer>
+      </div>
     </div>
   );
 }

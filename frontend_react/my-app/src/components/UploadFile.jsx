@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useProcessing } from "../context/ProcessingContext";
+import FloatingLines from "../elements/FloatingLines";
 
 export default function UploadFile() {
   const navigate = useNavigate();
@@ -173,8 +174,23 @@ export default function UploadFile() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-8 mt-12">
+    <div className="min-h-screen relative">
+      {/* Background Animation */}
+      <div className="fixed inset-0 z-0">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={[10, 15, 20]}
+          lineDistance={[8, 6, 4]}
+          bendRadius={5.0}
+          bendStrength={-0.5}
+          interactive={true}
+          parallax={true}
+        />
+      </div>
+      
+      {/* Content Layer */}
+      <div className="relative z-20 pt-20">
+        <main className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-8 mt-12">
         <h1 className="text-3xl font-bold text-center mb-8">Upload EEG Data</h1>
 
         {/* Upload Status */}
@@ -306,7 +322,8 @@ export default function UploadFile() {
             </p>
           </div>
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
